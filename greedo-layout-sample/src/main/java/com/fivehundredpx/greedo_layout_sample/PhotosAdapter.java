@@ -3,6 +3,8 @@ package com.fivehundredpx.greedo_layout_sample;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -28,8 +30,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     }
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mImageView;
-        public PhotoViewHolder(ImageView imageView) {
+        private ViewGroup mImageView;
+
+        public PhotoViewHolder(ViewGroup imageView) {
             super(imageView);
             mImageView = imageView;
         }
@@ -42,14 +45,17 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ImageView imageView = new ImageView(mContext);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        return new PhotoViewHolder(imageView);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item, parent, false);
+        return new PhotoViewHolder((ViewGroup) v);
+//
+//        ImageView imageView = new ImageView(mContext);
+//        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//
+//        imageView.setLayoutParams(new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT
+//        ));
+//        return new PhotoViewHolder(imageView);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         Picasso.with(mContext)
                 .load(mImageResIds[getLoopedIndex(position)])
                 .fit()
-                .into(holder.mImageView);
+                .into((ImageView) holder.mImageView.getChildAt(0));
     }
 
     @Override
